@@ -4,7 +4,8 @@
   "description": "JSON Server backend for MyStore",
   "main": "index.js",
   "scripts": {
-    "start": "json-server --watch db.json --port 3000"
+    "start": "json-server --watch db.json --port $PORT"
+
   },
   "keywords": [
     "json-server",

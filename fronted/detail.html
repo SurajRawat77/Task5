@@ -13,9 +13,9 @@
       const params = new URLSearchParams(window.location.search);
       const productId = Number(params.get("id"));
       console.log(typeof(productId));
-      const baseCartURL = "http://localhost:3000/cart";
+      const baseCartURL = `${API_BASE}/cart`;
 
-      fetch(`http://localhost:3000/products/${productId}`)
+      fetch(`${API_BASE}/products/${productId}`)
         .then((res) => {
           if (!res.ok) throw new Error(`Product not found: ${res.status}`);
           return res.json();

@@ -2,6 +2,8 @@ const container = document.getElementById("container");
 const searchBtn = document.querySelector(".search-btn");
 const searchInput = document.querySelector(".search input");
 
+const API_BASE = "https://mystore-backend.onrender.com";
+
 // Reusable function to render products
 function renderProducts(products) {
   container.innerHTML = ""; // clear container
@@ -69,7 +71,7 @@ function renderProducts(products) {
 }
 
 // Initial fetch: display all products
-fetch("http://localhost:3000/products")
+fetch(`${API_BASE}/products`)
   .then(res => res.json())
   .then(data => renderProducts(data))
   .catch(err => {
@@ -82,14 +84,14 @@ searchBtn.addEventListener("click", () => {
   const query = searchInput.value.trim().toLowerCase();
   if (!query) {
     // if input is empty, show all products
-    fetch("http://localhost:3000/products")
+    fetch(`${API_BASE}/products`)
       .then(res => res.json())
       .then(data => renderProducts(data))
       .catch(err => console.error(err));
     return;
   }
 
-  fetch("http://localhost:3000/products")
+  fetch(`${API_BASE}/products`)
     .then(res => res.json())
     .then(products => {
       const filtered = products.filter(p =>
@@ -107,7 +109,7 @@ const sortSelect = document.getElementById("sort-select");
 let allProducts = []; // store fetched products globally
 
 // Fetch products initially
-fetch("http://localhost:3000/products")
+fetch(`${API_BASE}/products`)
   .then(res => res.json())
   .then(data => {
     allProducts = data; // store globally
@@ -169,7 +171,7 @@ let currentPage = 1;
 const itemsPerPage = 10;
 
 // Fetch products
-fetch("http://localhost:3000/products")
+fetch(`${API_BASE}/products`)
   .then(res => res.json())
   .then(data => {
     products = data;

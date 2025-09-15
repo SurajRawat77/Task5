@@ -21,8 +21,9 @@
     const cartContainer = document.getElementById('cart-container');
     const totalCountElem = document.getElementById('total-count');
     const totalPriceElem = document.getElementById('total-price');
+    const API_BASE = "https://mystore-backend.onrender.com";
 
-    fetch('http://localhost:3000/cart')
+    fetch(`${API_BASE}/cart`)
       .then(res => res.json())
       .then(cartItems => {
         if (cartItems.length === 0) {
