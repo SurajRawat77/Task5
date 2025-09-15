@@ -2,7 +2,7 @@ const container = document.getElementById("container");
 const searchBtn = document.querySelector(".search-btn");
 const searchInput = document.querySelector(".search input");
 
-const API_BASE = "https://mystore-backend.onrender.com";
+const API_BASE = "https://task5-toqx.onrender.com";
 
 // Reusable function to render products
 function renderProducts(products) {

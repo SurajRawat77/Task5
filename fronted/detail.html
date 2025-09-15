@@ -13,6 +13,7 @@
       const params = new URLSearchParams(window.location.search);
       const productId = Number(params.get("id"));
       console.log(typeof(productId));
+      const API_BASE = "https://task5-toqx.onrender.com";
       const baseCartURL = `${API_BASE}/cart`;
 
       fetch(`${API_BASE}/products/${productId}`)
