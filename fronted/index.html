@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo"><h3>MyStore</h3></div>
+
+      <div class="search">
+        <input type="text" placeholder="Search products..." />
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+
+      <div class="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <div class="nav-menu">
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">Shop</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </div>
+
+        <div class="icons">
+          <a href="cart.html" class="cart"
+            ><i class="fa-solid fa-cart-shopping"></i
+          ></a>
+          <a href="#" class="account"
+            ><i class="fa-solid fa-circle-user"></i
+          ></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sort-container">
+      <label for="sort-select">Sort by:</label>
+      <select id="sort-select">
+        <option value="">Default</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="rating-desc">Rating: High → Low</option>
+        <option value="discount-desc">Discount: High → Low</option>
+      </select>
+    </div>
+
+    <div id="container"></div>
+    <div id="pagination"></div>
+  </body>
+
+  <script src="index.js"></script>
+</html>

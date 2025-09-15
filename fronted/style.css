@@ -1,0 +1,32 @@
+.main-image {
+  position: relative;
+}
+
+.main-image img {
+  width: 80%;
+  max-height: 250px;       /* fixed max height */
+  object-fit: contain;     /* maintain aspect ratio */
+  border-radius: 8px;
+}
+
+/* Next / Prev buttons */
+.image-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  font-size: 24px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}

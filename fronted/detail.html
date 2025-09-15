@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="product-detail">Loading...</div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const productId = Number(params.get("id"));
+      console.log(typeof(productId));
+      const baseCartURL = "http://localhost:3000/cart";
+
+      fetch(`http://localhost:3000/products/${productId}`)
+        .then((res) => {
+          if (!res.ok) throw new Error(`Product not found: ${res.status}`);
+          return res.json();
+        })
+        .then((product) => {
+          console.log(product)
+          const container = document.getElementById("product-detail");
+          container.innerHTML = `
+            <div class="product-page">
+              <div class="product-images">
+                <button class="image-nav prev">&#10094;</button>
+                <img src="${product.images[0]}" alt="${
+            product.title
+          }" class="main-image">
+                <button class="image-nav next">&#10095;</button>
+              </div>
+              <div class="product-info">
+                <h1>${product.title}</h1>
+                <p>${product.description}</p>
+                <p><strong>Price:</strong> $${product.price.toFixed(2)}</p>
+                <p><strong>Rating:</strong> ⭐ ${product.rating}</p>
+                <button id="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+          `;
+
+          // Image slider functionality
+          const mainImage = container.querySelector(".main-image");
+          const nextBtn = container.querySelector(".next");
+          const prevBtn = container.querySelector(".prev");
+          let currentIndex = 0;
+
+          function showImage(index) {
+            mainImage.src = product.images[index];
+          }
+
+          nextBtn.addEventListener("click", () => {
+            currentIndex = (currentIndex + 1) % product.images.length;
+            showImage(currentIndex);
+          });
+
+          prevBtn.addEventListener("click", () => {
+            currentIndex =
+              (currentIndex - 1 + product.images.length) %
+              product.images.length;
+            showImage(currentIndex);
+          });
+
+          // Add to Cart functionality
+          document
+            .getElementById("add-to-cart")
+            .addEventListener("click", () => {
+              // Check if product already exists in cart
+              fetch(`${baseCartURL}?id=${product.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.length > 0) {
+                    // Product exists, increase quantity
+                    const cartItem = data[0];
+                    fetch(`${baseCartURL}/${cartItem.id}`, {
+                      method: "PATCH",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ quantity: cartItem.quantity + 1 }),
+                    })
+                      .then(() =>
+                        alert(`${product.title} quantity increased in cart!`)
+                      )
+                      .catch((err) =>
+                        console.error("Error updating cart:", err)
+                      );
+                  } else {
+                    // Product not in cart, add new
+                    const newCartItem = {
+                      id: product.id,
+                      title: product.title,
+                      price: product.price,
+                      thumbnail: product.thumbnail,
+                      quantity: 1,
+                    };
+
+                    fetch(baseCartURL, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(newCartItem),
+                    })
+                      .then(() => alert(`${product.title} added to cart!`))
+                      .catch((err) =>
+                        console.error("Error adding to cart:", err)
+                      );
+                  }
+                })
+                .catch((err) => console.error("Error fetching cart:", err));
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+          document.getElementById("product-detail").innerHTML =
+            "<p>Error loading product</p>";
+        });
+    </script>
+  </body>
+</html>

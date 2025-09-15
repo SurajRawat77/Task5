@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+  <h1>My Cart</h1>
+  <div id="cart-container" class="cart-container">
+    Loading cart items...
+  </div>
+
+  <div class="cart-summary">
+    <div>Total Items: <span id="total-count">0</span></div>
+    <div>Total Price: $<span id="total-price">0.00</span></div>
+  </div>
+
+  <script>
+    const cartContainer = document.getElementById('cart-container');
+    const totalCountElem = document.getElementById('total-count');
+    const totalPriceElem = document.getElementById('total-price');
+
+    fetch('http://localhost:3000/cart')
+      .then(res => res.json())
+      .then(cartItems => {
+        if (cartItems.length === 0) {
+          cartContainer.innerHTML = "<p>Your cart is empty</p>";
+          return;
+        }
+
+        cartContainer.innerHTML = ''; // clear loading text
+
+        let totalCount = 0;
+        let totalPrice = 0;
+
+        cartItems.forEach(item => {
+          totalCount += item.quantity;
+          totalPrice += item.quantity * item.price;
+
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('cart-item');
+          itemDiv.innerHTML = `
+            <div class="item-image">
+              <img src="${item.thumbnail}" alt="${item.title}">
+            </div>
+            <div class="item-info">
+              <div class="item-title">${item.title}</div>
+              <div class="item-quantity">
+                <button class="decrease">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="increase">+</button>
+              </div>
+              <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+            </div>
+          `;
+          cartContainer.appendChild(itemDiv);
+
+          // quantity buttons
+          const qtyElem = itemDiv.querySelector('.quantity');
+          const increaseBtn = itemDiv.querySelector('.increase');
+          const decreaseBtn = itemDiv.querySelector('.decrease');
+
+          increaseBtn.addEventListener('click', () => {
+            item.quantity++;
+            qtyElem.textContent = item.quantity;
+            itemDiv.querySelector('.item-price').textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+            updateCartSummary();
+          });
+
+          decreaseBtn.addEventListener('click', () => {
+            if (item.quantity > 1) {
+              item.quantity--;
+              qtyElem.textContent = item.quantity;
+              itemDiv.querySelector('.item-price').textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+              updateCartSummary();
+            }
+          });
+        });
+
+        function updateCartSummary() {
+          let count = 0;
+          let price = 0;
+          cartItems.forEach(i => {
+            count += i.quantity;
+            price += i.quantity * i.price;
+          });
+          totalCountElem.textContent = count;
+          totalPriceElem.textContent = price.toFixed(2);
+        }
+
+        updateCartSummary();
+      })
+      .catch(err => {
+        console.error(err);
+        cartContainer.innerHTML = "<p>Error loading cart items</p>";
+      });
+  </script>
+</body>
+</html>
