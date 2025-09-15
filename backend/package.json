@@ -1,0 +1,19 @@
+{
+  "name": "mystore-backend",
+  "version": "1.0.0",
+  "description": "JSON Server backend for MyStore",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch db.json --port 3000"
+  },
+  "keywords": [
+    "json-server",
+    "backend",
+    "mystore"
+  ],
+  "author": "Suraj Rawat",
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}
